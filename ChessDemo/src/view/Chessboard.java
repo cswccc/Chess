@@ -30,9 +30,11 @@ public class Chessboard extends JComponent {
     //all chessComponents in this chessboard are shared only one model controller
     private final ClickController clickController = new ClickController(this);
     private final int CHESS_SIZE;
+    private final ChessGameFrame chessGameFrame;
 
 
-    public Chessboard(int width, int height) {
+    public Chessboard(int width, int height, ChessGameFrame chessGameFrame) {
+        this.chessGameFrame = chessGameFrame;
         setLayout(null); // Use absolute layout.
         setSize(width, height);
         CHESS_SIZE = width / 8;
@@ -107,6 +109,7 @@ public class Chessboard extends JComponent {
     }
 
     public void swapColor() {
+        chessGameFrame.addCurrentPlayer();
         currentColor = currentColor == ChessColor.BLACK ? ChessColor.WHITE : ChessColor.BLACK;
     }
 
