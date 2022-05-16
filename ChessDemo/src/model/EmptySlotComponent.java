@@ -25,4 +25,8 @@ public class EmptySlotComponent extends ChessComponent {
         //No resource!
     }
 
+    @Override
+    public String toString() {
+        return "_";
+    }
 }

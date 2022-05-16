@@ -2,6 +2,7 @@ package controller;
 
 
 import model.ChessComponent;
+import view.ChessGameFrame;
 import view.Chessboard;
 
 public class ClickController {

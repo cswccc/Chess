@@ -1,11 +1,15 @@
 package view;
 
+import SaveTheChess.Save;
 import controller.GameController;
+import model.ChessColor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 这个类表示游戏过程中的整个游戏界面，是一切的载体
@@ -18,6 +22,9 @@ public class ChessGameFrame extends JFrame {
     private GameController gameController;
     private JLabel currentPlayer = new JLabel("Black");
     private boolean flag = false;
+    private Chessboard chessboard;
+    private ArrayList<Chessboard> chessboards = new ArrayList<>();
+    private int cnt;
 
     public ChessGameFrame(int width, int height) {
         setTitle("2022 CS102A Project Demo"); //设置标题
@@ -39,20 +46,36 @@ public class ChessGameFrame extends JFrame {
         addChessboard();
         addLabel();
         addHelloButton();
-        addLoadButton();
         addBackToInterfaceButton();
         addRestartGameButton();
+        addSaveButton();
+        addRepentanceButton();
     }
-
-
     /**
      * 在游戏面板中添加棋盘
      */
     private void addChessboard() {
-        Chessboard chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE, this);
+        chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE, this);
         gameController = new GameController(chessboard);
         chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
+
         add(chessboard);
+        chessboards.add(new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboard.getChessComponents(),this,chessboard.getCurrentColor()));
+    }
+
+    public void changeChessboard() {
+
+        cnt++;
+        int Siz = chessboards.size();
+        remove(chessboard);
+        chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
+        chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
+        chessboard.initiateChessboard();
+
+        add(chessboard);
+        chessboard.repaint();
+
+        addCurrentPlayer();
     }
 
     /**
@@ -64,6 +87,13 @@ public class ChessGameFrame extends JFrame {
         statusLabel.setSize(200, 60);
         statusLabel.setFont(new Font("Rockwell", Font.BOLD, 15));
         add(statusLabel);
+    }
+
+    public void setChessboards(ArrayList<Chessboard> chessboards) {
+        for(Chessboard chessboard : chessboards) {
+            chessboard.setChessGameFrame(this);
+            this.chessboards.add(chessboard);
+        }
     }
 
     /**
@@ -79,17 +109,32 @@ public class ChessGameFrame extends JFrame {
         add(button);
     }
 
-    private void addLoadButton() {
-        JButton button = new JButton("Load");
+    private void SaveDialog(Save save) throws Exception {
+        int sav = JOptionPane.showConfirmDialog(null,"Are you sure to save the chessboard and exit?","Save",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if(sav == JOptionPane.YES_NO_OPTION) {
+            save.SaveTheData();
+            dispose();
+        }
+    }
+
+    private void addSaveButton() {
+        JButton button = new JButton("Save");
         button.setLocation(HEIGTH, HEIGTH / 10 + 140);
         button.setSize(200, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
 
         button.addActionListener(e -> {
-            System.out.println("Click load");
-            String path = JOptionPane.showInputDialog(this,"Input Path here");
-            gameController.loadGameFromFile(path);
+            Save save = new Save(chessboards);
+
+            try {
+                SaveDialog(save);
+                save.SaveTheData();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            dispose();
         });
     }
 
@@ -127,15 +172,34 @@ public class ChessGameFrame extends JFrame {
         });
     }
 
+    private void addRepentanceButton() {
+        JButton button = new JButton("Repentance");
+        button.setLocation(HEIGTH -25, HEIGTH / 10 + 350);
+        button.setSize(250, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(button);
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int Siz = chessboards.size();
+                chessboards.remove(Siz - 1);
+                changeChessboard();
+            }
+        });
+    }
+
     public void addCurrentPlayer() {
         add(currentPlayer);
-        if(!flag) {
+        if(chessboard.getCurrentColor() == ChessColor.WHITE) {
             currentPlayer.setText("White");
-            flag = true;
         }
         else {
             currentPlayer.setText("Black");
-            flag = false;
         }
+    }
+
+    public void addChessboards(Chessboard chessboard) {
+        chessboards.add(chessboard);
     }
 }

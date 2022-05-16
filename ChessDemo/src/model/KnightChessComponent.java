@@ -58,4 +58,9 @@ public class KnightChessComponent extends ChessComponent {
             g.drawOval(0, 0, getWidth() , getHeight());
         }
     }
+
+    @Override
+    public String toString() {
+        return getChessColor() == ChessColor.BLACK ? "N" : "n";
+    }
 }

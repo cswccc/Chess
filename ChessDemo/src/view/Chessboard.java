@@ -6,6 +6,7 @@ import controller.ClickController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,8 +31,7 @@ public class Chessboard extends JComponent {
     //all chessComponents in this chessboard are shared only one model controller
     private final ClickController clickController = new ClickController(this);
     private final int CHESS_SIZE;
-    private final ChessGameFrame chessGameFrame;
-
+    private ChessGameFrame chessGameFrame;
 
     public Chessboard(int width, int height, ChessGameFrame chessGameFrame) {
         this.chessGameFrame = chessGameFrame;
@@ -65,6 +65,33 @@ public class Chessboard extends JComponent {
         for(int i = 0 ; i < CHESSBOARD_SIZE; i++) {
             initPawnOnBoard(CHESSBOARD_SIZE-2,i,ChessColor.WHITE);
         }
+    }
+
+    public Chessboard(int width, int height, ChessComponent[][] chessComponents, ChessGameFrame chessGameFrame,ChessColor currentColor) {
+        this.chessGameFrame = chessGameFrame;
+        this.currentColor = currentColor;
+        setLayout(null); // Use absolute layout.
+        setSize(width, height);
+        CHESS_SIZE = width / 8;
+
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                this.chessComponents[i][j] = chessComponents[i][j];
+            }
+        }
+    }
+
+    public void setChessGameFrame(ChessGameFrame chessGameFrame) {
+        this.chessGameFrame = chessGameFrame;
+    }
+
+    public void setChessBoard(ChessComponent[][] chessComponents,ChessColor currentColor) {
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                this.chessComponents[i][j] = chessComponents[i][j];
+            }
+        }
+        this.currentColor = currentColor;
     }
 
     public ChessComponent[][] getChessComponents() {
@@ -109,8 +136,10 @@ public class Chessboard extends JComponent {
     }
 
     public void swapColor() {
-        chessGameFrame.addCurrentPlayer();
         currentColor = currentColor == ChessColor.BLACK ? ChessColor.WHITE : ChessColor.BLACK;
+        Chessboard c = new Chessboard(WIDTH,HEIGHT,chessComponents,chessGameFrame,currentColor);
+        chessGameFrame.addChessboards(c);
+        chessGameFrame.addCurrentPlayer();
     }
 
     private void initRookOnBoard(int row, int col, ChessColor color) {
@@ -137,6 +166,12 @@ public class Chessboard extends JComponent {
         putChessOnBoard(chessComponent);
     }
 
+    private void initEmptyChessOnboard(int row,int col) {
+        ChessComponent chessComponent = new EmptySlotComponent(new ChessboardPoint(row, col), calculatePoint(row, col), clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -144,12 +179,59 @@ public class Chessboard extends JComponent {
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     }
 
-
     private Point calculatePoint(int row, int col) {
         return new Point(col * CHESS_SIZE, row * CHESS_SIZE);
     }
 
     public void loadGame(List<String> chessData) {
         chessData.forEach(System.out::println);
+    }
+
+    public void initiateChessboard() {
+
+        for(int i = 0; i < 8; i++) {
+            for(int j = 0; j < 8; j++) {
+                if(chessComponents[i][j] instanceof BishopChessComponent) {
+                    initBishopOnBoard(i,j,chessComponents[i][j].getChessColor());
+                }
+                else if(chessComponents[i][j] instanceof KnightChessComponent) {
+                    initKnightOnBoard(i,j,chessComponents[i][j].getChessColor());
+                }
+                else if(chessComponents[i][j] instanceof PawnChessComponent) {
+                    initPawnOnBoard(i,j,chessComponents[i][j].getChessColor());
+                }
+                else if(chessComponents[i][j] instanceof RookChessComponent) {
+                    initRookOnBoard(i,j,chessComponents[i][j].getChessColor());
+                }
+                else if(chessComponents[i][j] instanceof EmptySlotComponent) {
+                    initEmptyChessOnboard(i,j);
+                }
+            }
+        }
+    }
+
+    public void setChess(int row, int col,char c) {
+        ChessColor color = ChessColor.NONE;
+        if(c >= 'A' && c <= 'Z') color = ChessColor.BLACK;
+        else if(c >= 'a' && c <= 'z') color = ChessColor.WHITE;
+
+        switch (c) {
+            case 'r':
+            case 'R': initRookOnBoard(row,col,color); break;
+
+            case 'n':
+            case 'N': initKnightOnBoard(row,col,color); break;
+
+            case 'b':
+            case 'B': initBishopOnBoard(row,col,color); break;
+
+            case 'p':
+            case 'P': initPawnOnBoard(row,col,color); break;
+            default:  initEmptyChessOnboard(row,col); break;
+        }
+    }
+
+    public void setCurrentColor(ChessColor currentColor) {
+        this.currentColor = currentColor;
     }
 }
