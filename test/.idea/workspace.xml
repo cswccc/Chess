@@ -1,33 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="363c637c-9511-477b-b811-23c57aa98581" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/controller/ClickController.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/controller/ClickController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/BishopChessComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/BishopChessComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/EmptySlotComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/EmptySlotComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/KnightChessComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/KnightChessComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/PawnChessComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/PawnChessComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/RookChessComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/model/RookChessComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/ChessGameFrame$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/ChessGameFrame$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/ChessGameFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/ChessGameFrame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/Chessboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/Chessboard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface.class" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/out/production/ChessDemo/view/MainInterface.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/controller/ClickController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/controller/ClickController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/model/BishopChessComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/model/BishopChessComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/model/EmptySlotComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/model/EmptySlotComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/model/KnightChessComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/model/KnightChessComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/model/PawnChessComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/model/PawnChessComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/model/RookChessComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/model/RookChessComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/test.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/view/ChessGameFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/view/ChessGameFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/view/Chessboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/view/Chessboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ChessDemo/src/view/MainInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/../ChessDemo/src/view/MainInterface.java" afterDir="false" />
-    </list>
+    <list default="true" id="363c637c-9511-477b-b811-23c57aa98581" name="变更" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
