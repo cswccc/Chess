@@ -24,9 +24,10 @@ public class ChessGameFrame extends JFrame {
     private JLabel currentPlayer = new JLabel("Black");
     private boolean flag = false;
     private Chessboard chessboard;
-    private ArrayList<Chessboard> chessboards = new ArrayList<>();
+    private ArrayList<Chessboard> chessboards = new ArrayList<>();//存储走完每一步的棋盘
     private int type;
-    Clear clear = new Clear();
+    private ChessColor computerColor;
+    private Clear clear = new Clear();
 
     public ChessGameFrame(int width, int height) throws Exception {
         clear.deleteData();
@@ -66,11 +67,11 @@ public class ChessGameFrame extends JFrame {
         chessboards.add(new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboard.getChessComponents(),this,chessboard.getCurrentColor()));
     }
 
-    private void WrongDialog() {
+    private void WrongDialog() {//无法退步,退到最后一步了不能再退了
         JOptionPane.showMessageDialog(null,"You can't step back anymore!","错误 ",0);
     }
 
-    public void changeChessboard() {
+    public void changeChessboard() {//更改棋盘,用于悔棋刷新棋盘
         int Siz = chessboards.size();
         if(Siz == 1) {
             WrongDialog();
@@ -93,7 +94,7 @@ public class ChessGameFrame extends JFrame {
     /**
      * 在游戏面板中添加标签
      */
-    private void addLabel() {
+    private void addLabel() {//当前行棋方的显示
         JLabel statusLabel = new JLabel("Current Player:");
         statusLabel.setLocation(HEIGTH - 20, HEIGTH / 10);
         statusLabel.setSize(200, 60);
@@ -101,7 +102,7 @@ public class ChessGameFrame extends JFrame {
         add(statusLabel);
     }
 
-    public void setChessboards(ArrayList<Chessboard> chessboards) {
+    public void setChessboards(ArrayList<Chessboard> chessboards) {//接收行棋数据
         for(Chessboard chessboard : chessboards) {
             chessboard.setChessGameFrame(this);
             this.chessboards.add(chessboard);
@@ -121,7 +122,7 @@ public class ChessGameFrame extends JFrame {
         add(button);
     }
 
-    private void SaveDialog(Save save) throws Exception {
+    private void SaveDialog(Save save) throws Exception {//保存弹出对话框
         int sav = JOptionPane.showConfirmDialog(null,"Are you sure to save the chessboard and exit?","Save",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 
         if(sav == JOptionPane.YES_NO_OPTION) {
@@ -130,7 +131,7 @@ public class ChessGameFrame extends JFrame {
         }
     }
 
-    private void addSaveButton() {
+    private void addSaveButton() {//保存键
         JButton button = new JButton("Save");
         button.setLocation(HEIGTH, HEIGTH / 10 + 140);
         button.setSize(200, 60);
@@ -150,7 +151,7 @@ public class ChessGameFrame extends JFrame {
         });
     }
 
-    private void addBackToInterfaceButton() {
+    private void addBackToInterfaceButton() {//返回到主界面
         JButton button = new JButton("Back To Interface");
         button.setLocation(HEIGTH -25, HEIGTH / 10 + 210);
         button.setSize(250, 60);
@@ -167,7 +168,7 @@ public class ChessGameFrame extends JFrame {
         });
     }
 
-    private void addRestartGameButton() {
+    private void addRestartGameButton() {//重新游戏
         JButton button = new JButton("Restart Game");
         button.setLocation(HEIGTH -25, HEIGTH / 10 + 280);
         button.setSize(250, 60);
@@ -189,7 +190,7 @@ public class ChessGameFrame extends JFrame {
         });
     }
 
-    private void addRepentanceButton() {
+    private void addRepentanceButton() {//悔棋
         JButton button = new JButton("Repentance");
         button.setLocation(HEIGTH -25, HEIGTH / 10 + 350);
         button.setSize(250, 60);
@@ -204,7 +205,7 @@ public class ChessGameFrame extends JFrame {
         });
     }
 
-    public void addCurrentPlayer() {
+    public void addCurrentPlayer() {//变换当前行棋方
         add(currentPlayer);
         if(chessboard.getCurrentColor() == ChessColor.WHITE) {
             currentPlayer.setText("White");
@@ -218,7 +219,13 @@ public class ChessGameFrame extends JFrame {
         chessboards.add(chessboard);
     }
 
-    public void setType(int type) {
+    public void setType(int type) {//收参数传给chessboard,同chessboard定义
         this.type = type;
+        chessboard.setType(type);
+    }
+
+    public void setComputerColor(ChessColor computerColor) {//同上
+        this.computerColor = computerColor;
+        chessboard.setComputerColor(computerColor);
     }
 }

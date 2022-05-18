@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BishopChessComponent extends ChessComponent {
 
@@ -38,6 +39,9 @@ public class BishopChessComponent extends ChessComponent {
     @Override
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
+        if(chessComponents[source.getX()][source.getY()].getChessColor() == chessComponents[destination.getX()][destination.getY()].getChessColor()) return false;
+        //我自己加的一句话,如果走的目的地和当前棋子颜色相同,不能走,返回false
+        //所有的棋子都添加了
         int flag = 0;
         if ((source.getX() + source.getY() == destination.getX() +destination.getY())) {
             flag = 1;

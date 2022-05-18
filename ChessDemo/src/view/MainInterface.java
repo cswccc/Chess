@@ -38,7 +38,7 @@ public class MainInterface extends JFrame {
         addPvEButtonForDifficult();
     }
 
-    private boolean checkData() throws IOException {
+    private boolean checkData() throws IOException {//检测是否有保存棋盘
         BufferedReader in = new BufferedReader(new FileReader("src/data.txt"));
         StringBuilder s = new StringBuilder();
 
@@ -50,7 +50,7 @@ public class MainInterface extends JFrame {
         return s.length() == 0;
     }
 
-    private void loadGame() throws Exception {
+    private void loadGame() throws Exception {//加载游戏
         BufferedReader in = new BufferedReader(new FileReader("src/data.txt"));
         StringBuilder s = new StringBuilder();
 
@@ -90,7 +90,7 @@ public class MainInterface extends JFrame {
         mainFrame.changeChessboard();
     }
 
-    private void LoadDialog() throws Exception {
+    private void LoadDialog() throws Exception {//加载对话,选择是否加载
         int loa = JOptionPane.showConfirmDialog(null,"Detecting that you have saved chess games, do you want to load them?","Save",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 
         if(loa == JOptionPane.YES_NO_OPTION) {
@@ -103,7 +103,7 @@ public class MainInterface extends JFrame {
         }
     }
 
-    private void addPvPButton() {
+    private void addPvPButton() {//人人
         JButton PvPButton = new JButton("P v P");
 
         PvPButton.addActionListener(new ActionListener() {
@@ -120,8 +120,6 @@ public class MainInterface extends JFrame {
                         LoadDialog();
 
                     }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -131,6 +129,17 @@ public class MainInterface extends JFrame {
         PvPButton.setSize(200,50);
         PvPButton.setFont(new Font("P v P",Font.BOLD,20));
         add(PvPButton);
+    }
+
+    private void ChooseColorDialog(ChessGameFrame mainFrame) {//人机简易
+        int loa = JOptionPane.showConfirmDialog(null," Would you like to play chess first?","Choose",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if(loa == JOptionPane.YES_NO_OPTION) {
+            mainFrame.setComputerColor(ChessColor.WHITE);
+        }
+        else {
+            mainFrame.setComputerColor(ChessColor.BLACK);
+        }
     }
 
     private void addPvEButtonForEasy() {
@@ -143,6 +152,7 @@ public class MainInterface extends JFrame {
                 try {
                     mainFrame = new ChessGameFrame(1500, 1000);
                     mainFrame.setType(1);
+                    ChooseColorDialog(mainFrame);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

@@ -8,6 +8,7 @@ import controller.ClickController;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 /**
@@ -33,8 +34,9 @@ public class Chessboard extends JComponent {
     private final ClickController clickController = new ClickController(this);
     private final int CHESS_SIZE;
     private ChessGameFrame chessGameFrame;
-    private int type;
-    private ForEasy easyComputer;
+    private int type;//人机类型 1简单 2中等 3困难,用的时候就传参
+    private ForEasy easyComputer;//简易人机
+    private ChessColor computerColor;//人机颜色
 
     public Chessboard(int width, int height, ChessGameFrame chessGameFrame) {
         this.chessGameFrame = chessGameFrame;
@@ -61,6 +63,12 @@ public class Chessboard extends JComponent {
         initKnightOnBoard(CHESSBOARD_SIZE-1,1,ChessColor.WHITE);
         initKnightOnBoard(CHESSBOARD_SIZE-1,CHESSBOARD_SIZE-2,ChessColor.WHITE);
 
+        initKingOnBoard(0, 3, ChessColor.BLACK);
+        initKingOnBoard(CHESSBOARD_SIZE - 1, 3, ChessColor.WHITE);
+
+        initQueenOnBoard(0, 4, ChessColor.BLACK);
+        initQueenOnBoard(CHESSBOARD_SIZE - 1, 4, ChessColor.WHITE);
+
         for(int i = 0 ; i < CHESSBOARD_SIZE; i++) {
             initPawnOnBoard(1,i,ChessColor.BLACK);
         }
@@ -68,8 +76,12 @@ public class Chessboard extends JComponent {
         for(int i = 0 ; i < CHESSBOARD_SIZE; i++) {
             initPawnOnBoard(CHESSBOARD_SIZE-2,i,ChessColor.WHITE);
         }
-    }
 
+        if(currentColor == computerColor) ComputerForEasy();
+    }
+    /*
+    另外的初始化棋盘的方法,这个主要在悔棋中调用了,因为悔棋你需要回到之前的棋盘.基本类似,只是初始化棋盘简单了一些
+     */
     public Chessboard(int width, int height, ChessComponent[][] chessComponents, ChessGameFrame chessGameFrame,ChessColor currentColor) {
         this.chessGameFrame = chessGameFrame;
         this.currentColor = currentColor;
@@ -82,20 +94,26 @@ public class Chessboard extends JComponent {
                 this.chessComponents[i][j] = chessComponents[i][j];
             }
         }
+
+        if(currentColor == computerColor) ComputerForEasy();//如果当前是电脑走,直接调用
     }
 
     public void setChessGameFrame(ChessGameFrame chessGameFrame) {
         this.chessGameFrame = chessGameFrame;
     }
 
-    public void setChessBoard(ChessComponent[][] chessComponents,ChessColor currentColor) {
-        for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 8; j++) {
-                this.chessComponents[i][j] = chessComponents[i][j];
-            }
-        }
-        this.currentColor = currentColor;
-    }
+    /*
+    我也忘了干啥用到了
+    这个好像没用到,我注释掉也没事
+     */
+//    public void setChessBoard(ChessComponent[][] chessComponents,ChessColor currentColor) {
+//        for(int i = 0; i < 8; i++) {
+//            for(int j = 0; j < 8; j++) {
+//                this.chessComponents[i][j] = chessComponents[i][j];
+//            }
+//        }
+//        this.currentColor = currentColor;
+//    }
 
     public ChessComponent[][] getChessComponents() {
         return chessComponents;
@@ -105,6 +123,10 @@ public class Chessboard extends JComponent {
         return currentColor;
     }
 
+    /*
+    下面的两个方法都是demo里面的,一个是把棋子放到棋盘上
+    另外一个是交换棋子顺便吃棋
+     */
     public void putChessOnBoard(ChessComponent chessComponent) {
         int row = chessComponent.getChessboardPoint().getX(), col = chessComponent.getChessboardPoint().getY();
 
@@ -143,10 +165,23 @@ public class Chessboard extends JComponent {
         Chessboard c = new Chessboard(WIDTH,HEIGHT,chessComponents,chessGameFrame,currentColor);
         chessGameFrame.addChessboards(c);
         chessGameFrame.addCurrentPlayer();
+        if(currentColor == computerColor) ComputerForEasy();
     }
 
     private void initRookOnBoard(int row, int col, ChessColor color) {
         ChessComponent chessComponent = new RookChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
+    private void initKingOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new KingChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+        chessComponent.setVisible(true);
+        putChessOnBoard(chessComponent);
+    }
+
+    private void initQueenOnBoard(int row, int col, ChessColor color) {
+        ChessComponent chessComponent = new QueenChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
     }
@@ -209,10 +244,19 @@ public class Chessboard extends JComponent {
                 else if(chessComponents[i][j] instanceof EmptySlotComponent) {
                     initEmptyChessOnboard(i,j);
                 }
+                else if(chessComponents[i][j] instanceof KingChessComponent) {
+                    initKingOnBoard(i,j,chessComponents[i][j].getChessColor());
+                }
+                else if(chessComponents[i][j] instanceof QueenChessComponent) {
+                    initQueenOnBoard(i,j,chessComponents[i][j].getChessColor());
+                }
             }
         }
     }
 
+    /*
+    放置棋子,读取data.txt时使用到了
+     */
     public void setChess(int row, int col,char c) {
         ChessColor color = ChessColor.NONE;
         if(c >= 'A' && c <= 'Z') color = ChessColor.BLACK;
@@ -230,6 +274,13 @@ public class Chessboard extends JComponent {
 
             case 'p':
             case 'P': initPawnOnBoard(row,col,color); break;
+
+            case 'k':
+            case 'K': initKingOnBoard(row,col,color); break;
+
+            case 'q':
+            case 'Q': initQueenOnBoard(row,col,color); break;
+
             default:  initEmptyChessOnboard(row,col); break;
         }
     }
@@ -238,15 +289,29 @@ public class Chessboard extends JComponent {
         this.currentColor = currentColor;
     }
 
-    public void ComputerForEasy() {
-        easyComputer.ComputerWork();
+    public void ComputerForEasy() {//简易人机调用
+        if(type == 0) return;
+        easyComputer = new ForEasy(computerColor,this);
+        if(currentColor == computerColor) {
+            switch (type) {
+                case 1: easyComputer.ComputerWork(); break;
+                case 2: break;
+                case 3: break;
+            }
+        }
+        swapColor();//人机下完之后一定要记得换出棋方
     }
 
-    public void setEasyComputer(ChessColor color) {
-        easyComputer = new ForEasy(color,this);
-    }
+//    public void setEasyComputer(ChessColor color) {//简易人机的设定,将电脑操控方传入.貌似没用到
+//        easyComputer = new ForEasy(color,this);
+//    }
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public void setComputerColor(ChessColor computerColor) {//设定电脑的控制棋方
+        this.computerColor = computerColor;
+        if(currentColor == computerColor) ComputerForEasy();
     }
 }

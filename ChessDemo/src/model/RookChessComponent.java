@@ -19,7 +19,10 @@ public class RookChessComponent extends ChessComponent {
      */
     private static Image ROOK_WHITE;
     private static Image ROOK_BLACK;
-
+    public static int RookMoveStepBlack1=0;
+    public static int RookMoveStepBlack2=0;
+    public static int RookMoveStepWhite1=0;
+    public static int RookMoveStepWhite2=0;
     /**
      * 车棋子对象自身的图片，是上面两种中的一种
      */
@@ -76,6 +79,8 @@ public class RookChessComponent extends ChessComponent {
     @Override
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
+        if(chessComponents[source.getX()][source.getY()].getChessColor() == chessComponents[destination.getX()][destination.getY()].getChessColor()) return false;
+
         if (source.getX() == destination.getX()) {
             int row = source.getX();
             for (int col = Math.min(source.getY(), destination.getY()) + 1;
@@ -94,6 +99,22 @@ public class RookChessComponent extends ChessComponent {
             }
         } else { // Not on the same row or the same column.
             return false;
+        }
+        if (chessComponents[source.getX()][source.getY()].getChessColor()==ChessColor.BLACK){
+            if (source.getX()==0&&source.getY()==7){
+                RookMoveStepBlack1++;
+            }
+            else if (source.getX()==7&&source.getY()==7){
+                RookMoveStepBlack2++;
+            }
+        }
+        else if (chessComponents[source.getX()][source.getY()].getChessColor()==ChessColor.WHITE){
+            if (source.getX()==0&&source.getY()==0){
+                RookMoveStepWhite1++;
+            }
+            else if (source.getX()==7&&source.getY()==0){
+                RookMoveStepWhite2++;
+            }
         }
         return true;
     }
@@ -117,6 +138,6 @@ public class RookChessComponent extends ChessComponent {
 
     @Override
     public String toString() {
-        return getChessColor() == ChessColor.BLACK ? "R" : "r";
+        return "R";
     }
 }
