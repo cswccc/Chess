@@ -25,17 +25,10 @@ public class Save {
         data.add(String.valueOf(s));
     }
 
-    private void deleteData() throws Exception{
-        File f = new File ("src/data.txt");
-        FileWriter fw = new FileWriter (f);
-        fw.write("");
-        fw.flush();
-        fw.close();
-    }
-
     public void SaveTheData() throws Exception {
         try {
-            deleteData();
+            Clear clear = new Clear();
+            clear.deleteData();
             BufferedWriter writer = new BufferedWriter(new FileWriter("src/data.txt"));
 
             for(String s : data) {

@@ -1,6 +1,7 @@
 package view;
 
 
+import ComputerPlayer.ForEasy;
 import model.*;
 import controller.ClickController;
 
@@ -32,6 +33,8 @@ public class Chessboard extends JComponent {
     private final ClickController clickController = new ClickController(this);
     private final int CHESS_SIZE;
     private ChessGameFrame chessGameFrame;
+    private int type;
+    private ForEasy easyComputer;
 
     public Chessboard(int width, int height, ChessGameFrame chessGameFrame) {
         this.chessGameFrame = chessGameFrame;
@@ -233,5 +236,17 @@ public class Chessboard extends JComponent {
 
     public void setCurrentColor(ChessColor currentColor) {
         this.currentColor = currentColor;
+    }
+
+    public void ComputerForEasy() {
+        easyComputer.ComputerWork();
+    }
+
+    public void setEasyComputer(ChessColor color) {
+        easyComputer = new ForEasy(color,this);
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

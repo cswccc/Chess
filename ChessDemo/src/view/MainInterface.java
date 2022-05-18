@@ -50,7 +50,7 @@ public class MainInterface extends JFrame {
         return s.length() == 0;
     }
 
-    private void loadGame() throws IOException {
+    private void loadGame() throws Exception {
         BufferedReader in = new BufferedReader(new FileReader("src/data.txt"));
         StringBuilder s = new StringBuilder();
 
@@ -90,7 +90,7 @@ public class MainInterface extends JFrame {
         mainFrame.changeChessboard();
     }
 
-    private void LoadDialog() throws IOException {
+    private void LoadDialog() throws Exception {
         int loa = JOptionPane.showConfirmDialog(null,"Detecting that you have saved chess games, do you want to load them?","Save",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 
         if(loa == JOptionPane.YES_NO_OPTION) {
@@ -122,6 +122,8 @@ public class MainInterface extends JFrame {
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         });
@@ -137,7 +139,13 @@ public class MainInterface extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                ChessGameFrame mainFrame = new ChessGameFrame(1500, 1000);
+                ChessGameFrame mainFrame = null;
+                try {
+                    mainFrame = new ChessGameFrame(1500, 1000);
+                    mainFrame.setType(1);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 mainFrame.setVisible(true);
             }
         });
@@ -153,7 +161,13 @@ public class MainInterface extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                ChessGameFrame mainFrame = new ChessGameFrame(1500, 1000);
+                ChessGameFrame mainFrame = null;
+                try {
+                    mainFrame = new ChessGameFrame(1500, 1000);
+                    mainFrame.setType(2);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 mainFrame.setVisible(true);
             }
         });
@@ -169,7 +183,13 @@ public class MainInterface extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                ChessGameFrame mainFrame = new ChessGameFrame(1500, 1000);
+                ChessGameFrame mainFrame = null;
+                try {
+                    mainFrame = new ChessGameFrame(1500, 1000);
+                    mainFrame.setType(3);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 mainFrame.setVisible(true);
             }
         });

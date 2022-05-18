@@ -1,5 +1,6 @@
 package view;
 
+import SaveTheChess.Clear;
 import SaveTheChess.Save;
 import controller.GameController;
 import model.ChessColor;
@@ -24,9 +25,11 @@ public class ChessGameFrame extends JFrame {
     private boolean flag = false;
     private Chessboard chessboard;
     private ArrayList<Chessboard> chessboards = new ArrayList<>();
-    private int cnt;
+    private int type;
+    Clear clear = new Clear();
 
-    public ChessGameFrame(int width, int height) {
+    public ChessGameFrame(int width, int height) throws Exception {
+        clear.deleteData();
         setTitle("2022 CS102A Project Demo"); //设置标题
         this.WIDTH = width;
         this.HEIGTH = height;
@@ -63,14 +66,23 @@ public class ChessGameFrame extends JFrame {
         chessboards.add(new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboard.getChessComponents(),this,chessboard.getCurrentColor()));
     }
 
-    public void changeChessboard() {
+    private void WrongDialog() {
+        JOptionPane.showMessageDialog(null,"You can't step back anymore!","错误 ",0);
+    }
 
-        cnt++;
+    public void changeChessboard() {
         int Siz = chessboards.size();
+        if(Siz == 1) {
+            WrongDialog();
+            return;
+        }
+
+        chessboards.remove(Siz - 1); Siz--;
         remove(chessboard);
         chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
         chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
         chessboard.initiateChessboard();
+
 
         add(chessboard);
         chessboard.repaint();
@@ -166,7 +178,12 @@ public class ChessGameFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                ChessGameFrame mainFrame = new ChessGameFrame(1500, 1000);
+                ChessGameFrame mainFrame = null;
+                try {
+                    mainFrame = new ChessGameFrame(1500, 1000);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 mainFrame.setVisible(true);
             }
         });
@@ -182,8 +199,6 @@ public class ChessGameFrame extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int Siz = chessboards.size();
-                chessboards.remove(Siz - 1);
                 changeChessboard();
             }
         });
@@ -201,5 +216,9 @@ public class ChessGameFrame extends JFrame {
 
     public void addChessboards(Chessboard chessboard) {
         chessboards.add(chessboard);
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

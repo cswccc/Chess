@@ -49,8 +49,11 @@ public class PawnChessComponent extends ChessComponent {
 
         if(chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.WHITE) {
             if(!theFirstStep) {
-                if(source.getX() == destination.getX()+2 && source.getY() == destination.getY() && chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent) return true;
-                theFirstStep = true;
+
+                if(source.getX() == destination.getX()+2 && source.getY() == destination.getY() && chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent) {
+                    theFirstStep = true;
+                    return true;
+                }
             }
             if(source.getX() == destination.getX()+1 && source.getY() == destination.getY() && chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent) return true;
             if(source.getX() == destination.getX()+1 && Math.abs(source.getY() - destination.getY()) == 1 && !(chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent)) return true;
@@ -58,8 +61,10 @@ public class PawnChessComponent extends ChessComponent {
 
         else {
             if(!theFirstStep) {
-                if(source.getX() == destination.getX()-2 && source.getY() == destination.getY() && chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent) return true;
-                theFirstStep = true;
+                if(source.getX() == destination.getX()-2 && source.getY() == destination.getY() && chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent) {
+                    theFirstStep = true;
+                    return true;
+                }
             }
             if(source.getX() == destination.getX()-1 && source.getY() == destination.getY() && chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent) return true;
             if(source.getX() == destination.getX()-1 && Math.abs(source.getY() - destination.getY()) == 1 && !(chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent)) return true;
