@@ -28,6 +28,10 @@ public class RookChessComponent extends ChessComponent {
      */
     private Image rookImage;
 
+    public RookChessComponent(ChessboardPoint chessboardPoint, ChessColor color) {
+        super(chessboardPoint,color);
+    }
+
     /**
      * 读取加载车棋子的图片
      *
@@ -138,6 +142,6 @@ public class RookChessComponent extends ChessComponent {
 
     @Override
     public String toString() {
-        return "R";
+        return getChessColor() == ChessColor.BLACK ? "R" : "r";
     }
 }

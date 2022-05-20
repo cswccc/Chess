@@ -14,6 +14,10 @@ public class QueenChessComponent extends ChessComponent {
 
     private Image queenImage;
 
+    public QueenChessComponent(ChessboardPoint chessboardPoint, ChessColor color) {
+        super(chessboardPoint,color);
+    }
+
     public void loadResource() throws IOException {
         if(QUEEN_WHITE == null) {
             QUEEN_WHITE = ImageIO.read(new File("./images/queen-white.png"));
@@ -73,8 +77,29 @@ public class QueenChessComponent extends ChessComponent {
                 }
             }
         }
-        else { // Not on the same row or the same column.
-            return false;
+        else {////女皇是车和象的结合体,别把象忘了
+            int flag = 0;
+            if ((source.getX() + source.getY() == destination.getX() +destination.getY())) {
+                flag = 1;
+            }
+            else if((source.getX() - source.getY() == destination.getX() - destination.getY())) {
+                flag = 1;
+            }
+            if(flag == 0) return false;
+
+            else {
+                int col = destination.getY();
+                for(int row = destination.getX(); row != source.getX();) {
+                    if(row < source.getX()) row++;
+                    else row --;
+
+                    if(col < source.getY()) col++;
+                    else col--;
+                    if((row != source.getX()) && !(chessComponents[row][col] instanceof EmptySlotComponent)) {
+                        return false;
+                    }
+                }
+            }
         }
         return true;
     }

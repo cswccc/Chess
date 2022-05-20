@@ -15,6 +15,10 @@ public class EmptySlotComponent extends ChessComponent {
         super(chessboardPoint, location, ChessColor.NONE, listener, size);
     }
 
+    public EmptySlotComponent(ChessboardPoint chessboardPoint, ChessColor color) {
+        super(chessboardPoint,color);
+    }
+
     @Override
     public boolean canMoveTo(ChessComponent[][] chessboard, ChessboardPoint destination) {
         return false;

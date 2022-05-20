@@ -14,6 +14,10 @@ public class KnightChessComponent extends ChessComponent {
 
     private Image knightImage;
 
+    public KnightChessComponent(ChessboardPoint chessboardPoint, ChessColor color) {
+        super(chessboardPoint,color);
+    }
+
     public void loadResource() throws IOException {
         if(KNIGHT_WHITE == null) {
             KNIGHT_WHITE = ImageIO.read(new File("./images/knight-white.png"));

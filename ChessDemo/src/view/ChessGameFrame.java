@@ -27,7 +27,9 @@ public class ChessGameFrame extends JFrame {
     private ArrayList<Chessboard> chessboards = new ArrayList<>();//存储走完每一步的棋盘
     private int type;
     private ChessColor computerColor;
+    public static String s;
     private Clear clear = new Clear();
+    static JPanel panel=new JPanel();
 
     public ChessGameFrame(int width, int height) throws Exception {
         clear.deleteData();
@@ -78,17 +80,35 @@ public class ChessGameFrame extends JFrame {
             return;
         }
 
-        chessboards.remove(Siz - 1); Siz--;
-        remove(chessboard);
-        chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
-        chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
-        chessboard.initiateChessboard();
+        if(type == 0) {
+            chessboards.remove(Siz - 1); Siz--;
+            remove(chessboard);
+            chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
+            chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
+            chessboard.initiateChessboard();
 
 
-        add(chessboard);
-        chessboard.repaint();
+            add(chessboard);
+            chessboard.repaint();
 
-        addCurrentPlayer();
+            addCurrentPlayer();
+        }
+        else {
+            chessboards.remove(Siz - 1); Siz--;
+            chessboards.remove(Siz - 1); Siz--;
+            remove(chessboard);
+            chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
+            chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
+            chessboard.initiateChessboard();
+            setComputerColor(computerColor);
+            setType(type);
+
+
+            add(chessboard);
+            chessboard.repaint();
+
+            addCurrentPlayer();
+        }
     }
 
     /**
@@ -227,5 +247,10 @@ public class ChessGameFrame extends JFrame {
     public void setComputerColor(ChessColor computerColor) {//同上
         this.computerColor = computerColor;
         chessboard.setComputerColor(computerColor);
+    }
+
+    public  static void Promotion(){
+        String[] str={"Queen","Rook","Knight","Bishop"};
+        s= (String) JOptionPane.showInputDialog(panel,"Which chess do you want it to be:","Promotion",1,null,str,str[0]);
     }
 }

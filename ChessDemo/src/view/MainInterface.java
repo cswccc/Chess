@@ -35,7 +35,6 @@ public class MainInterface extends JFrame {
         addPvPButton();
         addPvEButtonForEasy();
         addPvEButtonForMedium();
-        addPvEButtonForDifficult();
     }
 
     private boolean checkData() throws IOException {//检测是否有保存棋盘
@@ -175,6 +174,7 @@ public class MainInterface extends JFrame {
                 try {
                     mainFrame = new ChessGameFrame(1500, 1000);
                     mainFrame.setType(2);
+                    ChooseColorDialog(mainFrame);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -184,28 +184,6 @@ public class MainInterface extends JFrame {
         PvEButton.setLocation(HEIGTH / 2,HEIGTH / 2 + 100);
         PvEButton.setSize(200,50);
         PvEButton.setFont(new Font("PvE For Medium",Font.BOLD,20));
-        add(PvEButton);
-    }
-
-    private void addPvEButtonForDifficult() {
-        JButton PvEButton = new JButton("PvE For Difficult");
-        PvEButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                ChessGameFrame mainFrame = null;
-                try {
-                    mainFrame = new ChessGameFrame(1500, 1000);
-                    mainFrame.setType(3);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-                mainFrame.setVisible(true);
-            }
-        });
-        PvEButton.setLocation(HEIGTH / 2,HEIGTH / 2 + 150);
-        PvEButton.setSize(200,50);
-        PvEButton.setFont(new Font("PvE For Difficult",Font.BOLD,20));
         add(PvEButton);
     }
 }

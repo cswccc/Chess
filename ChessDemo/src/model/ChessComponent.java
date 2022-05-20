@@ -50,6 +50,11 @@ public abstract class ChessComponent extends JComponent {
         this.clickController = clickController;
     }
 
+    public ChessComponent(ChessboardPoint chessboardPoint, ChessColor chessColor) {
+        this.chessColor = chessColor;
+        this.chessboardPoint = chessboardPoint;
+    }
+
     public ChessboardPoint getChessboardPoint() {
         return chessboardPoint;
     }
@@ -134,7 +139,6 @@ public abstract class ChessComponent extends JComponent {
                 }
             }
         }
-
         return ret;
     }
 }

@@ -16,6 +16,10 @@ public class KingChessComponent extends ChessComponent {
 
     private Image kingImage;
 
+    public KingChessComponent(ChessboardPoint chessboardPoint, ChessColor color) {
+        super(chessboardPoint,color);
+    }
+
     public void loadResource() throws IOException {
         if(KING_WHITE == null) {
             KING_WHITE = ImageIO.read(new File("./images/king-white.png"));
@@ -50,42 +54,48 @@ public class KingChessComponent extends ChessComponent {
         ChessboardPoint source = getChessboardPoint();
         if(chessComponents[source.getX()][source.getY()].getChessColor() == chessComponents[destination.getX()][destination.getY()].getChessColor()) return false;
 
-        if(chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.WHITE) {
-            boolean a=chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent||chessComponents[destination.getX()][destination.getY()].getChessColor()==ChessColor.BLACK;
-            if(Math.abs(source.getX()-destination.getX())==1 && source.getY() == destination.getY() && a){
-                KingMoveStepWhite++;
-                return true;
-            }
-            if(Math.abs(source.getY()-destination.getY())==1 && source.getX() == destination.getX() && a) {
-                KingMoveStepWhite++;
-                return true;
-            }
-            if (Math.abs(source.getX() - destination.getX()) == 1 && Math.abs(source.getY() - destination.getY()) == 1 && a){
-                KingMoveStepWhite++;
-                return true;
-            }
-            if (KingMoveStepWhite==0&&RookChessComponent.RookMoveStepWhite1==0){
-                if (source.getY()==destination.getY()&&Math.abs(destination.getX()-source.getX())==2){
+//        if(chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.WHITE) {
+//            boolean a=chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent||chessComponents[destination.getX()][destination.getY()].getChessColor()==ChessColor.BLACK;
+//            if(Math.abs(source.getX()-destination.getX())==1 && source.getY() == destination.getY() && a){
+//                KingMoveStepWhite++;
+//                return true;
+//            }
+//            if(Math.abs(source.getY()-destination.getY())==1 && source.getX() == destination.getX() && a) {
+//                KingMoveStepWhite++;
+//                return true;
+//            }
+//            if (Math.abs(source.getX() - destination.getX()) == 1 && Math.abs(source.getY() - destination.getY()) == 1 && a){
+//                KingMoveStepWhite++;
+//                return true;
+//            }
+//            if (KingMoveStepWhite==0&&RookChessComponent.RookMoveStepWhite1==0){
+//                if (source.getY()==destination.getY()&&Math.abs(destination.getX()-source.getX())==2){
+//
+//                    return true;
+//                }
+//            }
+//        }
+//        if(chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.BLACK) {
+//            boolean a=chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent||chessComponents[destination.getX()][destination.getY()].getChessColor()==ChessColor.WHITE;
+//            if(Math.abs(source.getX()-destination.getX())==1 && source.getY() == destination.getY() && a){
+//                KingMoveStepBlack++;
+//                return true;
+//            }
+//            if(Math.abs(source.getY()-destination.getY())==1 && source.getX() == destination.getX() && a) {
+//                KingMoveStepBlack++;
+//                return true;
+//            }
+//            if (Math.abs(source.getX() - destination.getX()) == 1 && Math.abs(source.getY() - destination.getY()) == 1 && a){
+//                KingMoveStepBlack++;
+//                return true;
+//            }
+//        }
+        //上面的写法有些麻烦,只要是附近的点都可以走,调用Math.abs
+        int x = source.getX(), y = source.getY();
+        int dx = destination.getX(), dy = destination.getY();
+        if(chessComponents[x][y].getChessColor() == chessComponents[dx][dy].getChessColor()) return false;
 
-                    return true;
-                }
-            }
-        }
-        if(chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.BLACK) {
-            boolean a=chessComponents[destination.getX()][destination.getY()] instanceof EmptySlotComponent||chessComponents[destination.getX()][destination.getY()].getChessColor()==ChessColor.WHITE;
-            if(Math.abs(source.getX()-destination.getX())==1 && source.getY() == destination.getY() && a){
-                KingMoveStepBlack++;
-                return true;
-            }
-            if(Math.abs(source.getY()-destination.getY())==1 && source.getX() == destination.getX() && a) {
-                KingMoveStepBlack++;
-                return true;
-            }
-            if (Math.abs(source.getX() - destination.getX()) == 1 && Math.abs(source.getY() - destination.getY()) == 1 && a){
-                KingMoveStepBlack++;
-                return true;
-            }
-        }
+        if(Math.abs(dx-x) <= 1 && Math.abs(dy-y) <= 1) return true;
         return false;
     }
     public void Castling(){

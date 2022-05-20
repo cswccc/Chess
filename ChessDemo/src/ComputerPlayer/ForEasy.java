@@ -3,6 +3,7 @@ package ComputerPlayer;
 import model.ChessColor;
 import model.ChessComponent;
 import model.EmptySlotComponent;
+import model.PawnChessComponent;
 import view.Chessboard;
 import view.ChessboardPoint;
 
@@ -21,6 +22,10 @@ public class ForEasy {
     简单人机的思想:随机挑到一个棋子,随机走
      */
 
+    private void changeForPawn(int x, int y) {
+        if(chessboard.getChessComponents()[x][y] instanceof PawnChessComponent) ((PawnChessComponent) chessboard.getChessComponents()[x][y]).setTheFirstStep(true);
+    }
+
     public void ComputerWork() {
         ChessComponent[][] chessComponents = chessboard.getChessComponents();
         Random random = new Random();
@@ -32,6 +37,7 @@ public class ForEasy {
                 ArrayList<ChessboardPoint> canMoveTo = chessComponents[x][y].canReachPoints(chessComponents);
                 if(canMoveTo.size() != 0) {
                     ChessboardPoint destination = canMoveTo.get(random.nextInt(canMoveTo.size()));
+                    if(chessComponents[x][y] instanceof PawnChessComponent) changeForPawn(x,y);
                     chessboard.swapChessComponents(chessComponents[x][y],chessComponents[destination.getX()][destination.getY()]);
                     return;
                 }

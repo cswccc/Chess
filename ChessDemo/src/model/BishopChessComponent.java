@@ -22,6 +22,10 @@ public class BishopChessComponent extends ChessComponent {
         initiateBishopImage(color);
     }
 
+    public BishopChessComponent(ChessboardPoint chessboardPoint, ChessColor color) {
+        super(chessboardPoint,color);
+    }
+
     private void initiateBishopImage(ChessColor color) {
         try {
             loadResource();

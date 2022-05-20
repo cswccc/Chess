@@ -2,6 +2,7 @@ package view;
 
 
 import ComputerPlayer.ForEasy;
+import ComputerPlayer.ForMedium;
 import model.*;
 import controller.ClickController;
 
@@ -36,6 +37,7 @@ public class Chessboard extends JComponent {
     private ChessGameFrame chessGameFrame;
     private int type;//人机类型 1简单 2中等 3困难,用的时候就传参
     private ForEasy easyComputer;//简易人机
+    private ForMedium mediumComputer;
     private ChessColor computerColor;//人机颜色
 
     public Chessboard(int width, int height, ChessGameFrame chessGameFrame) {
@@ -77,7 +79,7 @@ public class Chessboard extends JComponent {
             initPawnOnBoard(CHESSBOARD_SIZE-2,i,ChessColor.WHITE);
         }
 
-        if(currentColor == computerColor) ComputerForEasy();
+        if(currentColor == computerColor) ComputerToDo();
     }
     /*
     另外的初始化棋盘的方法,这个主要在悔棋中调用了,因为悔棋你需要回到之前的棋盘.基本类似,只是初始化棋盘简单了一些
@@ -95,7 +97,7 @@ public class Chessboard extends JComponent {
             }
         }
 
-        if(currentColor == computerColor) ComputerForEasy();//如果当前是电脑走,直接调用
+        if(currentColor == computerColor) ComputerToDo();//如果当前是电脑走,直接调用
     }
 
     public void setChessGameFrame(ChessGameFrame chessGameFrame) {
@@ -165,7 +167,7 @@ public class Chessboard extends JComponent {
         Chessboard c = new Chessboard(WIDTH,HEIGHT,chessComponents,chessGameFrame,currentColor);
         chessGameFrame.addChessboards(c);
         chessGameFrame.addCurrentPlayer();
-        if(currentColor == computerColor) ComputerForEasy();
+        if(currentColor == computerColor) ComputerToDo();
     }
 
     private void initRookOnBoard(int row, int col, ChessColor color) {
@@ -289,13 +291,13 @@ public class Chessboard extends JComponent {
         this.currentColor = currentColor;
     }
 
-    public void ComputerForEasy() {//简易人机调用
+    public void ComputerToDo() {//人机调用
         if(type == 0) return;
-        easyComputer = new ForEasy(computerColor,this);
+
         if(currentColor == computerColor) {
             switch (type) {
-                case 1: easyComputer.ComputerWork(); break;
-                case 2: break;
+                case 1: easyComputer = new ForEasy(computerColor,this); easyComputer.ComputerWork(); break;
+                case 2: mediumComputer = new ForMedium(computerColor,this); mediumComputer.ComputerWork(); break;
                 case 3: break;
             }
         }
@@ -312,6 +314,6 @@ public class Chessboard extends JComponent {
 
     public void setComputerColor(ChessColor computerColor) {//设定电脑的控制棋方
         this.computerColor = computerColor;
-        if(currentColor == computerColor) ComputerForEasy();
+        if(currentColor == computerColor) ComputerToDo();
     }
 }
