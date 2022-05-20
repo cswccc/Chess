@@ -51,6 +51,8 @@ public class PawnChessComponent extends ChessComponent {
     @Override
     public  boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
+        if(chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.BLACK && source.getX() != 1) theFirstStep = true;
+        if(chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.WHITE && source.getX() != 6) theFirstStep = true;
         if(chessComponents[source.getX()][source.getY()].getChessColor() == chessComponents[destination.getX()][destination.getY()].getChessColor()) return false;
 
         if(chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.WHITE) {

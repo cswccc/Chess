@@ -87,7 +87,6 @@ public class ChessGameFrame extends JFrame {
             chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
             chessboard.initiateChessboard();
 
-
             add(chessboard);
             chessboard.repaint();
 
@@ -151,6 +150,10 @@ public class ChessGameFrame extends JFrame {
         }
     }
 
+    private void dialogForCanNot() {
+        JOptionPane.showMessageDialog(null,"Because this is PvE, so you cannot save the game！","Wrong ",0);
+    }
+
     private void addSaveButton() {//保存键
         JButton button = new JButton("Save");
         button.setLocation(HEIGTH, HEIGTH / 10 + 140);
@@ -159,6 +162,12 @@ public class ChessGameFrame extends JFrame {
         add(button);
 
         button.addActionListener(e -> {
+
+            if(type != 0) {
+                dialogForCanNot();
+                return;
+            }
+
             Save save = new Save(chessboards);
 
             try {
