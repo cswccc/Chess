@@ -2,18 +2,22 @@ package controller;
 
 
 import model.ChessComponent;
+import model.PawnChessComponent;
 import view.ChessGameFrame;
 import view.Chessboard;
+import view.ChessboardPoint;
 
 public class ClickController {
     private final Chessboard chessboard;
     private ChessComponent first;
+    private ChessGameFrame chessGameFrame;
 
-    public ClickController(Chessboard chessboard) {
+    public ClickController(Chessboard chessboard, ChessGameFrame chessGameFrame) {
         this.chessboard = chessboard;
+        this.chessGameFrame = chessGameFrame;
     }
 
-    public void onClick(ChessComponent chessComponent) {
+    public void onClick(ChessComponent chessComponent) throws Exception {
         if (first == null) {
             if (handleFirst(chessComponent)) {
                 chessComponent.setSelected(true);
@@ -28,8 +32,15 @@ public class ClickController {
                 recordFirst.repaint();
             } else if (handleSecond(chessComponent)) {
                 //repaint in swap chess method.
+                ChessboardPoint chessboardPoint = first.getChessboardPoint();
+                chessboard.remove(first);
+                first = chessboard.getChessComponents()[chessboardPoint.getX()][chessboardPoint.getY()];
+
                 chessboard.swapChessComponents(first, chessComponent);
                 chessboard.swapColor();
+
+                chessGameFrame.addForChessBoards();
+                chessGameFrame.changeChessboard();
 
                 first.setSelected(false);
                 first = null;
@@ -55,4 +66,6 @@ public class ClickController {
         return chessComponent.getChessColor() != chessboard.getCurrentColor() &&
                 first.canMoveTo(chessboard.getChessComponents(), chessComponent.getChessboardPoint());
     }
+
+
 }

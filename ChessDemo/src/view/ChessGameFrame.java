@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,6 @@ public class ChessGameFrame extends JFrame {
     static JPanel panel=new JPanel();
 
     public ChessGameFrame(int width, int height) throws Exception {
-        clear.deleteData();
         setTitle("2022 CS102A Project Demo"); //设置标题
         this.WIDTH = width;
         this.HEIGTH = height;
@@ -73,7 +73,7 @@ public class ChessGameFrame extends JFrame {
         JOptionPane.showMessageDialog(null,"You can't step back anymore!","错误 ",0);
     }
 
-    public void changeChessboard() {//更改棋盘,用于悔棋刷新棋盘
+    public void changeChessboard() throws Exception {//更改棋盘,用于悔棋刷新棋盘
         int Siz = chessboards.size();
         if(Siz == 1) {
             WrongDialog();
@@ -99,8 +99,8 @@ public class ChessGameFrame extends JFrame {
             chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
             chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
             chessboard.initiateChessboard();
-            setComputerColor(computerColor);
             setType(type);
+            setComputerColor(computerColor);
 
 
             add(chessboard);
@@ -108,6 +108,17 @@ public class ChessGameFrame extends JFrame {
 
             addCurrentPlayer();
         }
+    }
+
+    public void showChessboard() {
+        int Siz = chessboards.size();
+        remove(chessboard);
+        chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
+        chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
+        chessboard.initiateChessboard();
+        add(chessboard);
+
+        chessboard.repaint();
     }
 
     /**
@@ -122,6 +133,7 @@ public class ChessGameFrame extends JFrame {
     }
 
     public void setChessboards(ArrayList<Chessboard> chessboards) {//接收行棋数据
+        chessboards.remove(0);
         for(Chessboard chessboard : chessboards) {
             chessboard.setChessGameFrame(this);
             this.chessboards.add(chessboard);
@@ -145,14 +157,13 @@ public class ChessGameFrame extends JFrame {
         int sav = JOptionPane.showConfirmDialog(null,"Are you sure to save the chessboard and exit?","Save",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 
         if(sav == JOptionPane.YES_NO_OPTION) {
-            save.SaveTheData();
+            save.SaveTheData(type);
             dispose();
+            MainInterface mainInterFace = new MainInterface(1500,1000);
+            mainInterFace.setVisible(true);
         }
     }
 
-    private void dialogForCanNot() {
-        JOptionPane.showMessageDialog(null,"Because this is PvE, so you cannot save the game！","Wrong ",0);
-    }
 
     private void addSaveButton() {//保存键
         JButton button = new JButton("Save");
@@ -163,20 +174,13 @@ public class ChessGameFrame extends JFrame {
 
         button.addActionListener(e -> {
 
-            if(type != 0) {
-                dialogForCanNot();
-                return;
-            }
-
-            Save save = new Save(chessboards);
+            Save save = new Save(chessboards,computerColor);
 
             try {
                 SaveDialog(save);
-                save.SaveTheData();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            dispose();
         });
     }
 
@@ -191,7 +195,12 @@ public class ChessGameFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                MainInterface mainInterface = new MainInterface(1500,1000);
+                MainInterface mainInterface = null;
+                try {
+                    mainInterface = new MainInterface(1500,1000);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 mainInterface.setVisible(true);
             }
         });
@@ -211,6 +220,7 @@ public class ChessGameFrame extends JFrame {
                 ChessGameFrame mainFrame = null;
                 try {
                     mainFrame = new ChessGameFrame(1500, 1000);
+                    mainFrame.setType(type);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -229,7 +239,11 @@ public class ChessGameFrame extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                changeChessboard();
+                try {
+                    changeChessboard();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
@@ -248,8 +262,9 @@ public class ChessGameFrame extends JFrame {
         chessboards.add(chessboard);
     }
 
-    public void setType(int type) {//收参数传给chessboard,同chessboard定义
+    public void setType(int type) throws Exception {//收参数传给chessboard,同chessboard定义
         this.type = type;
+        clear.deleteData(type);
         chessboard.setType(type);
     }
 
@@ -261,5 +276,10 @@ public class ChessGameFrame extends JFrame {
     public  static void Promotion(){
         String[] str={"Queen","Rook","Knight","Bishop"};
         s= (String) JOptionPane.showInputDialog(panel,"Which chess do you want it to be:","Promotion",1,null,str,str[0]);
+    }
+
+
+    public void addForChessBoards() {
+        chessboards.add(new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE, this));
     }
 }

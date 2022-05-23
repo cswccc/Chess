@@ -1,5 +1,6 @@
 package model;
 
+import view.Chessboard;
 import view.ChessboardPoint;
 import controller.ClickController;
 
@@ -39,11 +40,14 @@ public abstract class ChessComponent extends JComponent {
     private ChessboardPoint chessboardPoint;
     protected final ChessColor chessColor;
     private boolean selected;
+    protected int size;
+    protected Chessboard chessboard;
 
     protected ChessComponent(ChessboardPoint chessboardPoint, Point location, ChessColor chessColor, ClickController clickController, int size) {
         enableEvents(AWTEvent.MOUSE_EVENT_MASK);
         setLocation(location);
         setSize(size, size);//父类继承函数
+        this.size = size;
         this.chessboardPoint = chessboardPoint;
         this.chessColor = chessColor;
         this.selected = false;
@@ -100,7 +104,11 @@ public abstract class ChessComponent extends JComponent {
 
         if (e.getID() == MouseEvent.MOUSE_PRESSED) {
             System.out.printf("Click [%d,%d]\n", chessboardPoint.getX(), chessboardPoint.getY());
-            clickController.onClick(this);
+            try {
+                clickController.onClick(this);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -140,5 +148,13 @@ public abstract class ChessComponent extends JComponent {
             }
         }
         return ret;
+    }
+
+    protected ClickController getClickController() {
+        return clickController;
+    }
+
+    public void setChessboard(Chessboard chessboard) {
+        this.chessboard = chessboard;
     }
 }

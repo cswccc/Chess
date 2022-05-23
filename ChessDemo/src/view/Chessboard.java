@@ -32,7 +32,7 @@ public class Chessboard extends JComponent {
     private final ChessComponent[][] chessComponents = new ChessComponent[CHESSBOARD_SIZE][CHESSBOARD_SIZE];
     private ChessColor currentColor = ChessColor.BLACK;
     //all chessComponents in this chessboard are shared only one model controller
-    private final ClickController clickController = new ClickController(this);
+    private final ClickController clickController;
     private final int CHESS_SIZE;
     private ChessGameFrame chessGameFrame;
     private int type;//人机类型 1简单 2中等 3困难,用的时候就传参
@@ -46,6 +46,7 @@ public class Chessboard extends JComponent {
         setSize(width, height);
         CHESS_SIZE = width / 8;
         System.out.printf("chessboard size = %d, chess size = %d\n", width, CHESS_SIZE);
+        clickController = new ClickController(this,chessGameFrame);
 
         initiateEmptyChessboard();
 
@@ -79,6 +80,8 @@ public class Chessboard extends JComponent {
             initPawnOnBoard(CHESSBOARD_SIZE-2,i,ChessColor.WHITE);
         }
 
+        setForChess();
+
         if(currentColor == computerColor) ComputerToDo();
     }
     /*
@@ -90,6 +93,7 @@ public class Chessboard extends JComponent {
         setLayout(null); // Use absolute layout.
         setSize(width, height);
         CHESS_SIZE = width / 8;
+        clickController = new ClickController(this,chessGameFrame);
 
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
@@ -228,7 +232,6 @@ public class Chessboard extends JComponent {
     }
 
     public void initiateChessboard() {
-
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 8; j++) {
                 if(chessComponents[i][j] instanceof BishopChessComponent) {
@@ -254,6 +257,8 @@ public class Chessboard extends JComponent {
                 }
             }
         }
+
+        setForChess();
     }
 
     /*
@@ -316,4 +321,10 @@ public class Chessboard extends JComponent {
         this.computerColor = computerColor;
         if(currentColor == computerColor) ComputerToDo();
     }
+
+    private void setForChess() {
+        for(int i = 0; i < 8; i++) for(int j = 0; j < 8; j++) chessComponents[i][j].setChessboard(this);
+    }
+
+
 }
