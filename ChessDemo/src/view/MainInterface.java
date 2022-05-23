@@ -148,7 +148,7 @@ public class MainInterface extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 try {
-//                    playBGM();
+                    playBGM();
                     if(checkData(0)) {
                         dispose();
                         ChessGameFrame mainFrame = new ChessGameFrame(1500, 1000);
@@ -187,7 +187,7 @@ public class MainInterface extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-//                    playBGM();
+                    playBGM();
 
                     if(checkData(1)) {
                         dispose();
@@ -268,5 +268,8 @@ public class MainInterface extends JFrame {
             sdl.write(buffer,0,nByte);
         }
         sdl.stop();
+
+        ais.close();
+        sdl.close();
     }
 }
