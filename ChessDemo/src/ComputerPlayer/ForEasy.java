@@ -23,7 +23,7 @@ public class ForEasy {
      */
 
     private void changeForPawn(int x, int y) {
-        if(chessboard.getChessComponents()[x][y] instanceof PawnChessComponent) ((PawnChessComponent) chessboard.getChessComponents()[x][y]).setTheFirstStep(true);
+        if(chessboard.getChessComponents()[x][y] instanceof PawnChessComponent) ((PawnChessComponent) chessboard.getChessComponents()[x][y]).setPawnStep(((PawnChessComponent) chessboard.getChessComponents()[x][y]).getPawnStep()+1);
     }
 
     public void ComputerWork() {

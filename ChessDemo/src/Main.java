@@ -10,10 +10,11 @@ public class Main {
             MainInterface mainInterface = null;
             try {
                 mainInterface = new MainInterface(1500,1000);
+                mainInterface.setVisible(true);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            mainInterface.setVisible(true);
+
         });
     }
 }

@@ -30,6 +30,16 @@ public class EmptySlotComponent extends ChessComponent {
     }
 
     @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.BLACK);
+        if (isSelected()) { // Highlights the model if selected.
+            g.setColor(Color.RED);
+            g.drawOval(0, 0, getWidth() , getHeight());
+        }
+    }
+
+    @Override
     public String toString() {
         return "_";
     }

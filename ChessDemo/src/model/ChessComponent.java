@@ -79,6 +79,10 @@ public abstract class ChessComponent extends JComponent {
         this.selected = selected;
     }
 
+    public boolean getSelected() {
+        return selected;
+    }
+
     /**
      * @param another 主要用于和另外一个棋子交换位置
      *                <br>
@@ -150,11 +154,12 @@ public abstract class ChessComponent extends JComponent {
         return ret;
     }
 
-    protected ClickController getClickController() {
+    public ClickController getClickController() {
         return clickController;
     }
 
     public void setChessboard(Chessboard chessboard) {
         this.chessboard = chessboard;
     }
+
 }

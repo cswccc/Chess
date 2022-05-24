@@ -5,10 +5,12 @@ import SaveTheChess.Save;
 import controller.GameController;
 import model.ChessColor;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,7 @@ public class ChessGameFrame extends JFrame {
     public static String s;
     private Clear clear = new Clear();
     static JPanel panel=new JPanel();
+    private Clip clip;
 
     public ChessGameFrame(int width, int height) throws Exception {
         setTitle("2022 CS102A Project Demo"); //设置标题
@@ -56,6 +59,9 @@ public class ChessGameFrame extends JFrame {
         addRestartGameButton();
         addSaveButton();
         addRepentanceButton();
+        addBackGroundMusic();
+        addTheBGMButton();
+        addTheSoundEffectButton();
     }
     /**
      * 在游戏面板中添加棋盘
@@ -63,10 +69,11 @@ public class ChessGameFrame extends JFrame {
     private void addChessboard() {
         chessboard = new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE, this);
         gameController = new GameController(chessboard);
+        chessboard.setTypeForSoundEffect(typeForSoundEffect);
         chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
 
         add(chessboard);
-        chessboards.add(new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboard.getChessComponents(),this,chessboard.getCurrentColor()));
+        chessboards.add(new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE, this));
     }
 
     private void WrongDialog() {//无法退步,退到最后一步了不能再退了
@@ -82,8 +89,10 @@ public class ChessGameFrame extends JFrame {
 
         if(type == 0) {
             chessboards.remove(Siz - 1); Siz--;
+
             remove(chessboard);
             chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
+            chessboard.setTypeForSoundEffect(typeForSoundEffect);
             chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
             chessboard.initiateChessboard();
 
@@ -95,8 +104,10 @@ public class ChessGameFrame extends JFrame {
         else {
             chessboards.remove(Siz - 1); Siz--;
             chessboards.remove(Siz - 1); Siz--;
+
             remove(chessboard);
             chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
+            chessboard.setTypeForSoundEffect(typeForSoundEffect);
             chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
             chessboard.initiateChessboard();
             setType(type);
@@ -112,8 +123,10 @@ public class ChessGameFrame extends JFrame {
 
     public void showChessboard() {
         int Siz = chessboards.size();
+
         remove(chessboard);
         chessboard = new Chessboard(CHESSBOARD_SIZE,CHESSBOARD_SIZE,chessboards.get(Siz - 1).getChessComponents(),this,chessboards.get(Siz - 1).getCurrentColor());
+        chessboard.setTypeForSoundEffect(typeForSoundEffect);
         chessboard.setLocation(HEIGTH / 10, HEIGTH / 10);
         chessboard.initiateChessboard();
         add(chessboard);
@@ -148,7 +161,7 @@ public class ChessGameFrame extends JFrame {
         JButton button = new JButton("Show Hello Here");
         button.addActionListener((e) -> JOptionPane.showMessageDialog(this, "Hello, world!"));
         button.setLocation(HEIGTH, HEIGTH / 10 + 70);
-        button.setSize(200, 60);
+        button.setSize(300, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
     }
@@ -164,11 +177,10 @@ public class ChessGameFrame extends JFrame {
         }
     }
 
-
     private void addSaveButton() {//保存键
         JButton button = new JButton("Save");
         button.setLocation(HEIGTH, HEIGTH / 10 + 140);
-        button.setSize(200, 60);
+        button.setSize(300, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
 
@@ -186,8 +198,8 @@ public class ChessGameFrame extends JFrame {
 
     private void addBackToInterfaceButton() {//返回到主界面
         JButton button = new JButton("Back To Interface");
-        button.setLocation(HEIGTH -25, HEIGTH / 10 + 210);
-        button.setSize(250, 60);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 210);
+        button.setSize(300, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
 
@@ -208,8 +220,8 @@ public class ChessGameFrame extends JFrame {
 
     private void addRestartGameButton() {//重新游戏
         JButton button = new JButton("Restart Game");
-        button.setLocation(HEIGTH -25, HEIGTH / 10 + 280);
-        button.setSize(250, 60);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 280);
+        button.setSize(300, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
 
@@ -221,6 +233,7 @@ public class ChessGameFrame extends JFrame {
                 try {
                     mainFrame = new ChessGameFrame(1500, 1000);
                     mainFrame.setType(type);
+                    mainFrame.setTypeForSoundEffect(typeForSoundEffect);
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -231,8 +244,8 @@ public class ChessGameFrame extends JFrame {
 
     private void addRepentanceButton() {//悔棋
         JButton button = new JButton("Repentance");
-        button.setLocation(HEIGTH -25, HEIGTH / 10 + 350);
-        button.setSize(250, 60);
+        button.setLocation(HEIGTH, HEIGTH / 10 + 350);
+        button.setSize(300, 60);
         button.setFont(new Font("Rockwell", Font.BOLD, 20));
         add(button);
 
@@ -246,6 +259,58 @@ public class ChessGameFrame extends JFrame {
                 }
             }
         });
+    }
+
+    private int cnt;
+    private JButton BGMButton;
+    private JLabel jLabel;
+
+    private void addTheBGMButton() {
+        BGMButton = new JButton("Stop/Play The BGM");
+        BGMButton.setLocation(HEIGTH, HEIGTH / 10 + 420);
+        BGMButton.setSize(300, 60);
+        BGMButton.setFont(new Font("Rockwell", Font.BOLD, 20));
+        add(BGMButton);
+
+        BGMButton.addActionListener(e -> {
+            cnt++;
+            if(cnt % 2 == 1) {
+                clip.stop();
+            }
+            else {
+                try {
+                    addBackGroundMusic();
+                } catch(Exception ex){
+                    ex.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private int cnt2;
+    private int typeForSoundEffect;
+
+    private void addTheSoundEffectButton() {
+        JButton button = new JButton("Open/Close the Sound Effect");
+        button.setLocation(HEIGTH, HEIGTH / 10 + 490);
+        button.setSize(300, 60);
+        button.setFont(new Font("Rockwell", Font.BOLD, 15));
+        add(button);
+
+        button.addActionListener(e -> {
+            cnt2++;
+            if(cnt2 % 2 == 1) {
+                setTypeForSoundEffect(1);
+            }
+            else {
+                setTypeForSoundEffect(0);
+            }
+        });
+    }
+
+    public void setTypeForSoundEffect(int typeForSoundEffect) {
+        this.typeForSoundEffect = typeForSoundEffect;
+        chessboard.setTypeForSoundEffect(typeForSoundEffect);
     }
 
     public void addCurrentPlayer() {//变换当前行棋方
@@ -281,5 +346,24 @@ public class ChessGameFrame extends JFrame {
 
     public void addForChessBoards() {
         chessboards.add(new Chessboard(CHESSBOARD_SIZE, CHESSBOARD_SIZE, this));
+    }
+
+    private AudioInputStream audioInput;
+    private File bgm;
+
+    private void addBackGroundMusic() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+        bgm = new File("BGM/The King's Arrival - Dominik Hauser.wav");
+        try {
+            clip = AudioSystem.getClip();
+            //将传入的文件转成可播放的文件
+            audioInput = AudioSystem.getAudioInputStream(bgm);
+            //播放器打开这个文件
+            clip.open(audioInput);
+            //clip.start();//只播放一次
+            //循环播放
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

@@ -74,25 +74,13 @@ public class ForMedium {
         if(c >= 'a' && c <= 'z') color = ChessColor.WHITE;
         else if(c >= 'A' && c <= 'Z') color = ChessColor.BLACK;
         switch (c) {
-            case 'R':
-            case 'r':
-                chessComponents[x][y] = new RookChessComponent(new ChessboardPoint(x,y),color); break;
-            case 'N':
-            case 'n':
-                chessComponents[x][y] = new KnightChessComponent(new ChessboardPoint(x,y),color); break;
-            case 'B':
-            case 'b':
-                chessComponents[x][y] = new BishopChessComponent(new ChessboardPoint(x,y),color); break;
-            case 'Q':
-            case 'q':
-                chessComponents[x][y] = new QueenChessComponent(new ChessboardPoint(x,y),color); break;
-            case 'K':
-            case 'k':
-                chessComponents[x][y] = new KingChessComponent(new ChessboardPoint(x,y),color); break;
-            case 'P':
-            case 'p':
-                chessComponents[x][y] = new PawnChessComponent(new ChessboardPoint(x,y),color); break;
-            default: chessComponents[x][y] = new EmptySlotComponent(new ChessboardPoint(x,y),color); break;
+            case 'R', 'r' -> chessComponents[x][y] = new RookChessComponent(new ChessboardPoint(x, y), color);
+            case 'N', 'n' -> chessComponents[x][y] = new KnightChessComponent(new ChessboardPoint(x, y), color);
+            case 'B', 'b' -> chessComponents[x][y] = new BishopChessComponent(new ChessboardPoint(x, y), color);
+            case 'Q', 'q' -> chessComponents[x][y] = new QueenChessComponent(new ChessboardPoint(x, y), color);
+            case 'K', 'k' -> chessComponents[x][y] = new KingChessComponent(new ChessboardPoint(x, y), color);
+            case 'P', 'p' -> chessComponents[x][y] = new PawnChessComponent(new ChessboardPoint(x, y), color);
+            default -> chessComponents[x][y] = new EmptySlotComponent(new ChessboardPoint(x, y), color);
         }
     }
 
@@ -109,7 +97,7 @@ public class ForMedium {
     }
 
     private void changeForPawn(int x, int y) {
-        if(chessboard.getChessComponents()[x][y] instanceof PawnChessComponent) ((PawnChessComponent) chessboard.getChessComponents()[x][y]).setTheFirstStep(true);
+        if(chessboard.getChessComponents()[x][y] instanceof PawnChessComponent) ((PawnChessComponent) chessboard.getChessComponents()[x][y]).setPawnStep(((PawnChessComponent) chessboard.getChessComponents()[x][y]).getPawnStep()+1);
     }
 
     private boolean protectForKing(ChessComponent[][] chessComponents) {
@@ -149,12 +137,17 @@ public class ForMedium {
             dispose(i,j,c,chessComponents);
         }
 
+        Chessboard chessboard1 = new Chessboard(100,100,chessComponents,null,chessboard.getCurrentColor());
+        for(int i = 0; i < 8; i++) for(int j = 0; j < 8 ; j++) {
+            chessComponents[i][j].setChessboard(chessboard1);
+        }
+
 
         if(protectForKing(chessComponents)) return;
 
         //第一种优先,能吃子
         for(int i = 0; i < 8; i++) for(int j = 0; j < 8; j++) if(chessComponents[i][j].getChessColor() == color && !(chessComponents[i][j] instanceof KingChessComponent)) {
-            for(int x = 0; x < 8; x++) for(int y = 0;  y < 8; y++) if(!(chessComponents[x][y] instanceof EmptySlotComponent) && chessComponents[i][j].canMoveTo(chessComponents,new ChessboardPoint(x,y))){
+            for(int x = 0; x < 8; x++) for(int y = 0;  y < 8; y++) if(!(chessComponents[x][y] instanceof EmptySlotComponent) && chessComponents[i][j].canMoveTo(chessComponents,new ChessboardPoint(x,y))) {
                 source = new ChessboardPoint(i,j);
                 destination = new ChessboardPoint(x,y);
                 if(chessComponents[i][j] instanceof PawnChessComponent) changeForPawn(i,j);

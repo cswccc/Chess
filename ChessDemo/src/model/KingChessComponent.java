@@ -1,15 +1,14 @@
 package model;
 
 import controller.ClickController;
-import view.Chessboard;
 import view.ChessboardPoint;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class KingChessComponent extends ChessComponent {
     private static Image KING_WHITE;
@@ -50,7 +49,7 @@ public class KingChessComponent extends ChessComponent {
         initiateKingChessImage(color);
     }
 
-    ArrayList<ChessboardPoint> ret = new ArrayList<>();
+
 
     public ArrayList<ChessboardPoint> canReachPoints(ChessComponent[][] chessComponents) {
         ArrayList<ChessboardPoint> canReach = new ArrayList<>();
@@ -63,7 +62,6 @@ public class KingChessComponent extends ChessComponent {
         }
         return canReach;
     }
-
 
     @Override
     public boolean canMoveTo(ChessComponent[][] chessComponents, ChessboardPoint destination) {
@@ -106,71 +104,62 @@ public class KingChessComponent extends ChessComponent {
         return false;
     }
 
-    private boolean Victory1(ChessComponent[][] chessComponents) {
-        ret=null;
-        ChessboardPoint source = getChessboardPoint();
-        ArrayList<ChessboardPoint> dangerous = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                if (chessComponents[i][j].getChessColor() != chessComponents[source.getX()][source.getY()].getChessColor()) {
-                    dangerous.addAll(chessComponents[i][j].canReachPoints(chessComponents));
-                }
-            }
-        }
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                ChessboardPoint C = new ChessboardPoint(i, j);
-                if (canMoveTo(chessComponents, C)) {
-                    if (!dangerous.contains(C)) {
-                        ret.add(C);
-                    }
-                }
-            }
-        }
-        return ret.size() != 0;
-    }
-
-    private boolean Victory2(ChessComponent[][] chessComponents) {
-        ChessboardPoint source = getChessboardPoint();
-        if (Victory1(chessComponents)) {
-            for (int i = 0; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    if (chessComponents[i][j].getChessColor() == chessComponents[source.getX()][source.getY()].getChessColor()) {
-                        ArrayList<ChessboardPoint> canHelp = chessComponents[i][j].canReachPoints(chessComponents);
-                        for (int n = 0; n < canHelp.size(); n++) {
-
-
-                        }
-                    }
-                }
-            }
-
-        }
-        return false;
-    }
 
     public boolean exchange(ChessComponent[][] chessComponents, ChessboardPoint destination) {
         ChessboardPoint source = getChessboardPoint();
         if (chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.WHITE) {
             if (KingMoveStepWhite == 0) {
-                if (RookChessComponent.getRookMoveStepWhite1() == 0) {
+                if (chessComponents[7][0] instanceof RookChessComponent && ((RookChessComponent)chessComponents[7][0]).getRookMoveStepWhite1() == 0) {
                     if (chessComponents[7][1] instanceof EmptySlotComponent && chessComponents[7][2] instanceof EmptySlotComponent) {
                         if (destination.getX() == 7 && destination.getY() == 1) {
                             chessComponents[7][0] = new EmptySlotComponent(new ChessboardPoint(7, 0), getLocation(), getClickController(), size);
-                            chessComponents[7][2] = new RookChessComponent(new ChessboardPoint(7, 0), getLocation(), ChessColor.WHITE,getClickController(), size);
-
-
+                            chessComponents[7][2] = new RookChessComponent(new ChessboardPoint(7, 2), getLocation(), ChessColor.WHITE,getClickController(), size);
+                            return true;
                         }
-                        return true;
+                        if(destination.getX() == 7 && destination.getY() == 2) return true;
+                    }
+                }
+                if (chessComponents[7][7] instanceof RookChessComponent && ((RookChessComponent)chessComponents[7][7]).getRookMoveStepWhite2() == 0) {
+                    if (chessComponents[7][4] instanceof EmptySlotComponent && chessComponents[7][5] instanceof EmptySlotComponent && chessComponents[7][6] instanceof EmptySlotComponent) {
+                        if (destination.getX() == 7 && destination.getY() == 5) {
+                            chessComponents[7][7] = new EmptySlotComponent(new ChessboardPoint(7, 7), getLocation(), getClickController(), size);
+                            chessComponents[7][4] = new RookChessComponent(new ChessboardPoint(7, 4), getLocation(), ChessColor.WHITE,getClickController(), size);
+                            return true;
+                        }
+                        if(destination.getX() == 7 && destination.getY() == 4) return true;
                     }
                 }
             }
 
+        }
+        if (chessComponents[source.getX()][source.getY()].getChessColor() == ChessColor.BLACK) {
+            if (KingMoveStepBlack == 0) {
+                if (chessComponents[0][0] instanceof RookChessComponent && ((RookChessComponent)chessComponents[0][0]).getRookMoveStepBlack1() == 0) {
+                    if (chessComponents[0][1] instanceof EmptySlotComponent && chessComponents[0][2] instanceof EmptySlotComponent) {
+                        if (destination.getX() == 0 && destination.getY() == 1) {
+                            chessComponents[0][0] = new EmptySlotComponent(new ChessboardPoint(0, 0), getLocation(), getClickController(), size);
+                            chessComponents[0][2] = new RookChessComponent(new ChessboardPoint(0, 2), getLocation(), ChessColor.BLACK,getClickController(), size);
+                            return true;
+                        }
+                        if(destination.getX() == 0 &&destination.getY() == 2) return true;
+                    }
+                }
+                if (chessComponents[0][7] instanceof RookChessComponent && ((RookChessComponent)chessComponents[0][7]).getRookMoveStepBlack2() == 0) {
+                    if (chessComponents[0][4] instanceof EmptySlotComponent && chessComponents[0][5] instanceof EmptySlotComponent && chessComponents[0][6] instanceof EmptySlotComponent) {
+                        if (destination.getX() == 0 && destination.getY() == 5) {
+                            chessComponents[0][7] = new EmptySlotComponent(new ChessboardPoint(0, 7), getLocation(), getClickController(), size);
+                            chessComponents[0][4] = new RookChessComponent(new ChessboardPoint(0, 4), getLocation(), ChessColor.BLACK,getClickController(), size);
+                            return true;
+                        }
+                        if(destination.getX() == 0 && destination.getY() == 4) return true;
+                    }
+                }
             }
+
+        }
 
         return false;
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -186,5 +175,21 @@ public class KingChessComponent extends ChessComponent {
     @Override
     public String toString() {
         return getChessColor() == ChessColor.BLACK ? "K" : "k";
+    }
+
+    public int getKingMoveStepBlack() {
+        return KingMoveStepBlack;
+    }
+
+    public int getKingMoveStepWhite() {
+        return KingMoveStepWhite;
+    }
+
+    public void setKingMoveStepBlack(int kingMoveStepBlack) {
+        KingMoveStepBlack = kingMoveStepBlack;
+    }
+
+    public void setKingMoveStepWhite(int kingMoveStepWhite) {
+        KingMoveStepWhite = kingMoveStepWhite;
     }
 }

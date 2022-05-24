@@ -175,15 +175,40 @@ public class Chessboard extends JComponent {
     }
 
     private void initRookOnBoard(int row, int col, ChessColor color) {
+        int RookMoveStepBlack1 = 0,RookMoveStepBlack2 = 0,RookMoveStepWhite1 = 0,RookMoveStepWhite2 = 0;
+        if(!(chessComponents[row][col] instanceof EmptySlotComponent)) {
+            RookMoveStepBlack1 = ((RookChessComponent)chessComponents[row][col]).getRookMoveStepBlack1();
+            RookMoveStepBlack2 = ((RookChessComponent)chessComponents[row][col]).getRookMoveStepBlack2();
+            RookMoveStepWhite1 = ((RookChessComponent)chessComponents[row][col]).getRookMoveStepWhite1();
+            RookMoveStepWhite2 = ((RookChessComponent)chessComponents[row][col]).getRookMoveStepWhite2();
+        }
+
+
         ChessComponent chessComponent = new RookChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
+
+        ((RookChessComponent) chessComponents[row][col]).setRookMoveStepBlack1(RookMoveStepBlack1);
+        ((RookChessComponent) chessComponents[row][col]).setRookMoveStepBlack2(RookMoveStepBlack2);
+        ((RookChessComponent) chessComponents[row][col]).setRookMoveStepWhite1(RookMoveStepWhite1);
+        ((RookChessComponent) chessComponents[row][col]).setRookMoveStepWhite2(RookMoveStepWhite2);
     }
 
     private void initKingOnBoard(int row, int col, ChessColor color) {
+        int KingMoveStepBlack = 0,KingMoveStepWhite = 0;
+        if(!(chessComponents[row][col] instanceof EmptySlotComponent)) {
+            KingMoveStepBlack = ((KingChessComponent) chessComponents[row][col]).getKingMoveStepBlack();
+            KingMoveStepWhite = ((KingChessComponent) chessComponents[row][col]).getKingMoveStepWhite();
+        }
+
         ChessComponent chessComponent = new KingChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
+
+        ((KingChessComponent)chessComponents[row][col]).setKingMoveStepBlack(KingMoveStepBlack);
+        ((KingChessComponent)chessComponents[row][col]).setKingMoveStepWhite(KingMoveStepWhite);
     }
 
     private void initQueenOnBoard(int row, int col, ChessColor color) {
@@ -205,9 +230,17 @@ public class Chessboard extends JComponent {
     }
 
     private void initPawnOnBoard(int row, int col, ChessColor color) {
+        int PawnStep = 0;
+        if(!(chessComponents[row][col] instanceof EmptySlotComponent)) {
+            PawnStep = ((PawnChessComponent) chessComponents[row][col]).getPawnStep();
+        }
+
         ChessComponent chessComponent = new PawnChessComponent(new ChessboardPoint(row, col), calculatePoint(row, col), color, clickController, CHESS_SIZE);
+
         chessComponent.setVisible(true);
         putChessOnBoard(chessComponent);
+
+        ((PawnChessComponent) chessComponents[row][col]).setPawnStep(PawnStep);
     }
 
     private void initEmptyChessOnboard(int row,int col) {
@@ -326,5 +359,14 @@ public class Chessboard extends JComponent {
         for(int i = 0; i < 8; i++) for(int j = 0; j < 8; j++) chessComponents[i][j].setChessboard(this);
     }
 
+    private int typeForSoundEffect;
 
+    public void setTypeForSoundEffect(int typeForSoundEffect) {
+        this.typeForSoundEffect = typeForSoundEffect;
+        clickController.setType(typeForSoundEffect);
+    }
+
+    public ChessGameFrame getChessGameFrame() {
+        return chessGameFrame;
+    }
 }

@@ -104,22 +104,6 @@ public class RookChessComponent extends ChessComponent {
         } else { // Not on the same row or the same column.
             return false;
         }
-        if (chessComponents[source.getX()][source.getY()].getChessColor()==ChessColor.BLACK){
-            if (source.getX()==0&&source.getY()==7){
-                RookMoveStepBlack1++;
-            }
-            else if (source.getX()==7&&source.getY()==7){
-                RookMoveStepBlack2++;
-            }
-        }
-        else if (chessComponents[source.getX()][source.getY()].getChessColor()==ChessColor.WHITE){
-            if (source.getX()==0&&source.getY()==0){
-                RookMoveStepWhite1++;
-            }
-            else if (source.getX()==7&&source.getY()==0){
-                RookMoveStepWhite2++;
-            }
-        }
         return true;
     }
 
@@ -145,19 +129,35 @@ public class RookChessComponent extends ChessComponent {
         return getChessColor() == ChessColor.BLACK ? "R" : "r";
     }
 
-    public static int getRookMoveStepBlack1() {
+    public int getRookMoveStepBlack1() {
         return RookMoveStepBlack1;
     }
 
-    public static int getRookMoveStepBlack2() {
+    public int getRookMoveStepBlack2() {
         return RookMoveStepBlack2;
     }
 
-    public static int getRookMoveStepWhite1() {
+    public int getRookMoveStepWhite1() {
         return RookMoveStepWhite1;
     }
 
-    public static int getRookMoveStepWhite2() {
+    public int getRookMoveStepWhite2() {
         return RookMoveStepWhite2;
+    }
+
+    public void setRookMoveStepBlack1(int rookMoveStepBlack1) {
+        RookMoveStepBlack1 = rookMoveStepBlack1;
+    }
+
+    public void setRookMoveStepBlack2(int rookMoveStepBlack2) {
+        RookMoveStepBlack2 = rookMoveStepBlack2;
+    }
+
+    public void setRookMoveStepWhite1(int rookMoveStepWhite1) {
+        RookMoveStepWhite1 = rookMoveStepWhite1;
+    }
+
+    public void setRookMoveStepWhite2(int rookMoveStepWhite2) {
+        RookMoveStepWhite2 = rookMoveStepWhite2;
     }
 }
